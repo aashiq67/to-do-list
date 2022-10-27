@@ -1,0 +1,50 @@
+<div id="mySidenav" class="sidenav">
+    <h1>LISTS</h1>
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <% for (let i=0; i<lists.length; i++) {%>
+        <div class="nav-item">
+            <div>
+                <a href=<%=url %><%= lists[i].name %>><%= lists[i].name %></a>
+            </div>
+            <div>
+                <button class="btn3"><i class="fa-solid fa-xmark fa-lg" onclick="deleteList('<%= lists[i].name %>')"></i></button>
+            </div>
+        </div>
+    <% } %>
+    <center><button class="btn1" onclick="createList()"><i class="fa-solid fa-plus"></i>&nbsp;Create New
+            List</button></center>
+    <br>
+    <form id="inputlist" class="item" action="/createlist" method="post">
+        <input type="text" name="listName" placeholder="New List" autocomplete="off">
+        <button class="btn2" type="submit" name="list" value="<%= listTitle %>"><span class="fa-solid fa-plus"></span></button>
+    </form>
+</div>
+
+<span class="fa-solid fa-bars" style="font-size:30px;cursor:pointer" onclick="openNav()">&nbsp;&nbsp;List</span>
+
+<script>
+    function openNav() {
+        document.getElementById("mySidenav").style.width = "250px";
+    }
+
+    function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+    }
+
+    function createList() {
+        const inputls = document.getElementById("inputlist");
+        console.log(inputls)
+        inputls.style.display = "block"
+    }
+
+    function deleteList(listName) {
+        const XHR = new XMLHttpRequest();
+        
+        XHR.addEventListener('error', (event) => {
+            alert('Oops! Something went wrong.');
+        });
+        XHR.open('POST', 'http://localhost:3000/deletelist');
+        XHR.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        XHR.send(listName);
+    }
+</script>
